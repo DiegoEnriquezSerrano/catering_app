@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   get 'signup', to: 'users#new'
+  get 'signup/caterer', to: 'users#new_caterer'
 end

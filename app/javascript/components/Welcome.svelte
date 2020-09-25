@@ -16,7 +16,7 @@ async function sectionClick(e) {
       let res = await data.response.text();
       let obj = JSON.parse(res);
       if (obj.status === "ok") {
-        dispatch('loadPage', obj.page);
+        dispatch('loadPage', { page: obj.page, params: obj.params });
       }
     });
 };
@@ -49,6 +49,8 @@ main {
   background-size: cover;
   background-repeat: no-repeat;
   color: #fdfdfd;
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
 }
 
 nav {

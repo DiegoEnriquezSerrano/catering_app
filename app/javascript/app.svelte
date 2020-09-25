@@ -6,11 +6,14 @@ import Welcome from './components/Welcome.svelte';
 import SignUp from './components/SignUp.svelte';
 
 export let page;
+export let params;
 
-page = 'signup';
+page = 'home';
+$: params = '';
 
 let loadPage = (e) => {
-  page = e.detail;
+  page = e.detail.page;
+  params = e.detail.params || '';
 }
 
 </script>
@@ -18,5 +21,5 @@ let loadPage = (e) => {
 {#if page == 'home'}
   <Welcome on:loadPage={loadPage} />
 {:else if page == 'signup'}
-  <SignUp on:loadPage={loadPage} />
+  <SignUp on:loadPage={loadPage} {params} />
 {/if}

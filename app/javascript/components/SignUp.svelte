@@ -1,12 +1,19 @@
 <script>
 
-  import { onMount } from 'svelte';
+import { onMount } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 
-  onMount(() => {
-    console.log('SignUP!');
-  })
+export let params;
 
-  async function sectionClick(e) {
+$: params;
+
+onMount(() => {
+  console.log('SignUP!');
+})
+
+let dispatch = createEventDispatcher();
+
+async function sectionClick(e) {
   await fetch(e.target.pathname, { method: 'GET', headers: { "Content-Type": "application/json" } })
     .then(response => {
       response = { status: response.status, response: response }
@@ -16,7 +23,7 @@
       let res = await data.response.text();
       let obj = JSON.parse(res);
       if (obj.status === "ok") {
-        dispatch('loadPage', obj.page);
+        dispatch('loadPage', { page: obj.page, params: obj.params });
       }
     });
 };
@@ -36,19 +43,54 @@
   
 <main>
   <div class="authentication-form">
-    <a href="/signup/caterer" class="primary">Want to register as a Caterer?</a>
-    <div class="field">
-      <label for="username">Username</label>
-      <input type="text" name="username" placeholder="Enter a username">
+    {#if params == ''}
+      <p>
+        <a href="/signup/caterer" class="primary" on:click|preventDefault={sectionClick}>Click here to register as a Caterer</a>
+      </p>
+    {/if}
+    <div class="fields_pair">
+      <div class="field sm">
+        <label for="first_name">First name</label>
+        <input type="text" name="first_name">
+      </div>
+      <div class="field sm">
+        <label for="last_name">Last name</label>
+        <input type="text" name="last_name">
+      </div>
     </div>
     <div class="field">
       <label for="email">Email</label>
-      <input type="text" name="email" placeholder="Enter your email address">
+      <input type="text" name="email">
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input type="password" name="password" placeholder="Create a password">
+      <input type="password" name="password">
     </div>
+    {#if params == 'caterer'}
+      <div class="field">
+        <label for="business_name">Business name</label>
+        <input type="text" name="business_name">
+      </div>
+      <div class="field">
+        <label for="address">Business address</label>
+        <input type="text" name="address">
+      </div>
+      <div class="fields_trio">
+        <div class="field xsm">
+          <label for="city">City</label>
+          <input type="text" name="city">
+        </div>
+        <div class="field xsm">
+          <label for="state">State</label>
+          <input type="text" name="state">
+        </div>
+        <div class="field xsm">
+          <label for="zip">Zip Code</label>
+          <input type="text" name="zip">
+        </div>
+      </div>
+    {/if}
+    <button type="submit" class="button primary">Submit</button>
   </div>
 </main>
 
@@ -58,25 +100,45 @@
   display: grid;
   background-color: #ffffff;
   color: #020202;
-  grid-template-rows: 75px 75px 75px 75px;
   align-content: center;
   align-items: center;
-  justify-items: center;
-  justify-content: center;
+  justify-content: stretch;
   max-width: 600px;
   width: calc(100% - 20px);
-  border: 4px solid #A1A1A1;
+  border: 2px solid #B6B6B6;
   margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px -2px rgb(10,10,10);
+  padding: 20px;
 }
 
 .field {
   display: grid;
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: 1fr;
+  grid-auto-flow: row;
+  grid-gap: 5px;
+}
+
+.fields_pair {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  grid-gap: 10px;
+}
+
+.fields_trio {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  grid-gap: 10px;
 }
 
 label {
-  font-size: 1.1rem;
+  font-size: 1.0rem;
   font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 main {
@@ -138,6 +200,22 @@ nav a {
   color: #e09f3e;
   font-weight: bold;
   text-decoration: none;
+}
+
+.button.primary {
+  color: #ffffff;
+  background-color: #e09f3e;
+  padding: 10px;
+  border-radius: 5px;
+  border-width: 0;
+}
+
+.button.primary:hover {
+  background-color: #fff3b0;
+}
+
+input {
+  padding: 5px;
 }
 
 </style>
