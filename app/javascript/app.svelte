@@ -1,19 +1,22 @@
 <script>
 
-import Welcome from './components/Welcome.svelte';
+import { onMount } from "svelte";
 
-export let name;
+import Welcome from './components/Welcome.svelte';
+import SignUp from './components/SignUp.svelte';
+
+export let page;
+
+page = 'signup';
+
+let loadPage = (e) => {
+  page = e.detail;
+}
 
 </script>
 
-<style>
-
-  h1 {
-    color: #FF3E00;
-  }
-
-</style>
-
-<h1>Hello {name}!</h1>
-
-<Welcome />
+{#if page == 'home'}
+  <Welcome on:loadPage={loadPage} />
+{:else if page == 'signup'}
+  <SignUp on:loadPage={loadPage} />
+{/if}
