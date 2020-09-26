@@ -96,6 +96,12 @@ async function sectionClick(e) {
 
 <style>
 
+main {
+  background-image: url('/images/SignUpPageBackground.jpg');
+  background-attachment: fixed;
+  background-position: top center;
+}
+
 .authentication-form {
   display: grid;
   background-color: #ffffff;
@@ -103,8 +109,8 @@ async function sectionClick(e) {
   align-content: center;
   align-items: center;
   justify-content: stretch;
-  max-width: 600px;
-  width: calc(100% - 20px);
+  max-width: 500px;
+  width: calc(100vw - 20px);
   border: 2px solid #B6B6B6;
   margin-top: 20px;
   border-radius: 5px;
@@ -161,10 +167,11 @@ nav {
   display: grid;
   color: #ffffff;
   background-color: #e09f3e;
+  background-image: linear-gradient(to top, rgb(224, 159, 62), rgba(224,190,140,0.6));
   grid-template-columns: 150px 1fr;
   align-items: center;
   justify-items: stretch;
-  text-shadow: 0 0 10px rgb(0,0,0);
+  text-shadow: 0 0 5px rgb(0,0,0);
   font-size: 1.2rem;
   box-shadow: 0 1px 3px -1px rgb(25,25,25);
   z-index: 100;

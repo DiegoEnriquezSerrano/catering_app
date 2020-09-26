@@ -8,7 +8,7 @@ import SignUp from './components/SignUp.svelte';
 export let page;
 export let params;
 
-page = 'home';
+page = 'signup';
 $: params = '';
 
 let loadPage = (e) => {
