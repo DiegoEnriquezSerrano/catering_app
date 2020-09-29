@@ -1,9 +1,13 @@
-class Users::SessionsController < ApplicationController
-  def create
-    user = User.where(email: params[:email]).first
+class Users::SessionsController < Devise::SessionsController
+  respond_to :json
 
-    if user&.valid_password?(params[:password])
-      render json: user.as_json(only: [:id, :email, :authentication_token]), status: :created
+  def create
+    @user = User.where(email: params[:email]).first
+
+    if @user&.valid_password?(params[:password])
+      jwt = JWT.encode( { user_id: @user.id, exp: (Time.now + 2.weeks).to_i }, ENV['DEVISE_SECRET_KEY'], 'HS256' )
+
+      render json: { token: jwt, email: @user.email.to_json }, status: :created
     else
       head(:unauthorized)
     end

@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: 'users/registrations' }
+  devise_for :users,
+              path: '',
+              path_names: {
+                sign_in: 'login',
+                sign_out: 'logout',
+                registration: 'signup'
+              },
+              controllers: { 
+                registrations: 'users/registrations',
+                sessions: 'users/sessions'
+              }
   resources :posts
   resources :users, only: [:create]
 

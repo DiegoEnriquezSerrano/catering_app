@@ -5,6 +5,8 @@ ruby '2.5.7'
 
 gem 'pg'
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
 # Use sqlite3 as the database for Active Record
@@ -27,6 +29,9 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'devise'
 gem 'simple_token_authentication'
+gem 'jwt'
+gem 'devise-jwt', '~> 0.7.0'
+gem 'rack-cors'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
