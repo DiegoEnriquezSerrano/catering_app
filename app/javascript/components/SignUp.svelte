@@ -5,93 +5,118 @@ import { createEventDispatcher } from 'svelte';
 
 export let params;
 
-$: params;
+let firstName;
+let lastName;
+let email;
+let password;
+let passwordConfirmation;
+let catererUser;
+let catererBusinessName;
+let catererBusinessAddress;
+let catererBusinessCity;
+let catererBusinessState;
+let zipCode;
+let url;
+let reqParams = {};
+let body = {};
 
-onMount(() => {
-  console.log('SignUP!');
-})
+let catererSignup = false;
+
+$: params;
 
 let dispatch = createEventDispatcher();
 
-async function sectionClick(e) {
-  await fetch(e.target.pathname, { method: 'GET', headers: { "Content-Type": "application/json" } })
-    .then(response => {
-      response = { status: response.status, response: response }
-      return response;
-    })
-    .then(async data => {
-      let res = await data.response.text();
-      let obj = JSON.parse(res);
-      if (obj.status === "ok") {
-        dispatch('loadPage', { page: obj.page, params: obj.params });
-      }
-    });
-};
+let register = (e) => {
+
+  let reqBody = {
+    user: {
+      first_name: firstName.value,
+      last_name: lastName.value,
+      email: email.value,
+      password: password.value,
+      password_confirmation: passwordConfirmation.value,
+      caterer_user: catererSignup,
+    }
+  }
+
+  let url = "/users";
+  let reqParams = {
+    method: 'POST',
+    body: JSON.stringify(reqBody),
+    headers: { "Content-Type": "application/json" }
+  };
+  fetch(url, reqParams)
+  .then(response => {return response.text()})
+  .then(data => {
+    let res = JSON.parse(data);
+    console.log(res);
+  })
+}
+
+let catererSignUpToggle = () => {
+  if (catererSignup == false) catererSignup = true
+  else catererSignup = false;
+}
 
 </script>
 
-<nav>
-  <div class="brand">
-    <a href="/home" on:click|preventDefault={sectionClick}>Feedr</a>
-  </div>
-  <ul>
-    <li><a href="/signup" on:click|preventDefault={sectionClick}>Sign Up</a></li>
-    <li><a href="/login" on:click|preventDefault={sectionClick}>Login</a></li>
-    <li>Search</li>
-  </ul>
-</nav>
   
 <main>
-  <div class="authentication-form">
-    {#if params == ''}
+  <form class="authentication-form">
+    {#if catererSignup == false}
       <p>
-        <a href="/signup/caterer" class="primary" on:click|preventDefault={sectionClick}>Click here to register as a Caterer</a>
+        <a href="/signup/caterer" class="primary" on:click|preventDefault={catererSignUpToggle}>Click here to register as a Caterer</a>
       </p>
     {/if}
     <div class="fields_pair">
-      <div class="field sm">
+      <div class="field">
         <label for="first_name">First name</label>
-        <input type="text" name="first_name">
+        <input type="text" name="first_name" bind:this={firstName}>
       </div>
-      <div class="field sm">
+      <div class="field">
         <label for="last_name">Last name</label>
-        <input type="text" name="last_name">
+        <input type="text" name="last_name" bind:this={lastName}>
       </div>
     </div>
     <div class="field">
       <label for="email">Email</label>
-      <input type="text" name="email">
+      <input type="text" name="email" bind:this={email}>
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input type="password" name="password">
+      <input type="password" name="password" bind:this={password}>
     </div>
-    {#if params == 'caterer'}
+    <div class="field">
+      <label for="password">Password confirmation</label>
+      <input type="password" name="password_confirmation" bind:this={passwordConfirmation}>
+    </div><!--field-->
+    <input type="hidden" name="caterer_user" bind:value={catererSignup} />
+    {#if catererSignup == true}
       <div class="field">
         <label for="business_name">Business name</label>
-        <input type="text" name="business_name">
-      </div>
+        <input type="text" name="business_name" bind:this={catererBusinessName}>
+      </div><!--field-->
       <div class="field">
         <label for="address">Business address</label>
-        <input type="text" name="address">
-      </div>
+        <input type="text" name="address" bind:this={catererBusinessAddress}>
+      </div><!--field-->
       <div class="fields_trio">
-        <div class="field xsm">
+        <div class="field">
           <label for="city">City</label>
-          <input type="text" name="city">
-        </div>
-        <div class="field xsm">
+          <input type="text" name="city" bind:this={catererBusinessCity}>
+        </div><!--field-->
+        <div class="field">
           <label for="state">State</label>
-          <input type="text" name="state">
-        </div>
-        <div class="field xsm">
+          <input type="text" name="state" bind:this={catererBusinessState}>
+        </div><!--field-->
+        <div class="field">
           <label for="zip">Zip Code</label>
-          <input type="text" name="zip">
-        </div>
-      </div>
+          <input type="text" name="zip" bind:this={zipCode}>
+        </div><!--field-->
+      </div><!--fields_trio-->
     {/if}
-    <button type="submit" class="button primary">Submit</button>
-  </div>
+    <button type="submit" class="button primary" on:click|preventDefault={register}>Submit</button>
+  </form>
 </main>
 
 <style>
@@ -161,46 +186,6 @@ main {
   justify-items: center;
   position: absolute;
   top: 0;
-}
-
-nav {
-  display: grid;
-  color: #ffffff;
-  background-color: #e09f3e;
-  background-image: linear-gradient(to top, rgb(224, 159, 62), rgba(224,190,140,0.6));
-  grid-template-columns: 150px 1fr;
-  align-items: center;
-  justify-items: stretch;
-  text-shadow: 0 0 5px rgb(0,0,0);
-  font-size: 1.2rem;
-  box-shadow: 0 1px 3px -1px rgb(25,25,25);
-  z-index: 100;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-}
-
-.brand {
-  padding: 15px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: right;
-}
-
-li {
-  display: inline-block;
-  padding: 15px;
-  margin: 0;
-}
-
-nav a {
-  text-transform: none;
-  text-decoration: none;
-  color: #ffffff
 }
 
 .primary {

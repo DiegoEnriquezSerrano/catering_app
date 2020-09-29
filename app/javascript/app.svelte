@@ -2,6 +2,7 @@
 
 import { onMount } from "svelte";
 
+import Nav from './components/Nav.svelte';
 import Welcome from './components/Welcome.svelte';
 import SignUp from './components/SignUp.svelte';
 
@@ -18,6 +19,7 @@ let loadPage = (e) => {
 
 </script>
 
+<Nav {params} />
 {#if page == 'home'}
   <Welcome on:loadPage={loadPage} />
 {:else if page == 'signup'}
