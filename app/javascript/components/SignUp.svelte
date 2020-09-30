@@ -27,7 +27,6 @@ $: params;
 let dispatch = createEventDispatcher();
 
 let register = (e) => {
-
   let reqBody = {
     user: {
       first_name: firstName.value,
@@ -36,10 +35,14 @@ let register = (e) => {
       password: password.value,
       password_confirmation: passwordConfirmation.value,
       caterer_user: catererSignup,
+      caterer_business_address: catererBusinessAddress ? catererBusinessAddress.value : null,
+      caterer_business_city: catererBusinessCity ? catererBusinessCity.value : null,
+      caterer_business_state: catererBusinessState ? catererBusinessState.value : null,
+      zip_code: zipCode ? zipCode.value : null
     }
   }
 
-  let url = "/users";
+  let url = "/signup";
   let reqParams = {
     method: 'POST',
     body: JSON.stringify(reqBody),
@@ -54,8 +57,7 @@ let register = (e) => {
 }
 
 let catererSignUpToggle = () => {
-  if (catererSignup == false) catererSignup = true
-  else catererSignup = false;
+  catererSignup == false ? catererSignup = true : catererSignup = false;
 }
 
 </script>
@@ -71,49 +73,50 @@ let catererSignUpToggle = () => {
     <div class="fields_pair">
       <div class="field">
         <label for="first_name">First name</label>
-        <input type="text" name="first_name" bind:this={firstName}>
+        <input type="text" name="first_name" bind:this={firstName} required>
       </div>
       <div class="field">
         <label for="last_name">Last name</label>
-        <input type="text" name="last_name" bind:this={lastName}>
+        <input type="text" name="last_name" bind:this={lastName} required>
       </div>
     </div>
     <div class="field">
       <label for="email">Email</label>
-      <input type="text" name="email" bind:this={email}>
+      <input type="text" name="email" bind:this={email} required>
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input type="password" name="password" bind:this={password}>
+      <input type="password" name="password" bind:this={password} required>
     </div>
     <div class="field">
       <label for="password">Password confirmation</label>
-      <input type="password" name="password_confirmation" bind:this={passwordConfirmation}>
-    </div><!--field-->
+      <input type="password" name="password_confirmation" bind:this={passwordConfirmation} required>
+    </div>
     <input type="hidden" name="caterer_user" bind:value={catererSignup} />
+
     {#if catererSignup == true}
       <div class="field">
         <label for="business_name">Business name</label>
-        <input type="text" name="business_name" bind:this={catererBusinessName}>
-      </div><!--field-->
+        <input type="text" name="business_name" bind:this={catererBusinessName} required>
+      </div>
       <div class="field">
         <label for="address">Business address</label>
-        <input type="text" name="address" bind:this={catererBusinessAddress}>
-      </div><!--field-->
+        <input type="text" name="address" bind:this={catererBusinessAddress} required>
+      </div>
       <div class="fields_trio">
         <div class="field">
           <label for="city">City</label>
-          <input type="text" name="city" bind:this={catererBusinessCity}>
-        </div><!--field-->
+          <input type="text" name="city" bind:this={catererBusinessCity} required>
+        </div>
         <div class="field">
           <label for="state">State</label>
-          <input type="text" name="state" bind:this={catererBusinessState}>
-        </div><!--field-->
+          <input type="text" name="state" bind:this={catererBusinessState} required>
+        </div>
         <div class="field">
           <label for="zip">Zip Code</label>
-          <input type="text" name="zip" bind:this={zipCode}>
-        </div><!--field-->
-      </div><!--fields_trio-->
+          <input type="text" name="zip" bind:this={zipCode} required>
+        </div>
+      </div>
     {/if}
     <button type="submit" class="button primary" on:click|preventDefault={register}>Submit</button>
   </form>

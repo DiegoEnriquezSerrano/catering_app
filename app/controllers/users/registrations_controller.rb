@@ -14,8 +14,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = User.new(user_params)
 
     if @user.save
-      sign_in @user
-      render json: @user.as_json(only: [:email, :authentication_token]), status: :created
+      jwt = JWT.encode( { user_id: @user.id, exp: (Time.now + 2.weeks).to_i }, ENV['DEVISE_SECRET_KEY'], 'HS256' )
+      render json: { token: jwt, email: @user.email }, status: :created
     else
       head(:unprocessable_entity)
     end
@@ -69,6 +69,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :caterer_user)
+    params.require(:user).permit(
+      :email,
+      :password,
+      :password_confirmation,
+      :first_name,
+      :last_name,
+      :caterer_user,
+      :caterer_business_name,
+      :caterer_business_address,
+      :caterer_business_city,
+      :caterer_business_state,
+      :zip_code
+      )
   end
 end
