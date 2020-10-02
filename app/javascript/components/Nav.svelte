@@ -1,6 +1,7 @@
 <script>
 
 import { createEventDispatcher } from 'svelte';
+import { processAjaxData } from '../scripts.js';
 
 export let params;
 
@@ -16,11 +17,12 @@ async function sectionClick(e) {
     })
     .then(async data => {
       let res = await data.response.text();
-      let obj = JSON.parse(res);
-      if (obj.status === "ok") {
-        dispatch('loadPage', { page: obj.page, params: obj.params });
+      if (data.status == 200) {
+        let obj = { page: e.target.pathname.split('/')[1] }
+        processAjaxData(res, data.response.url);
+        dispatch('loadPage', obj);
       }
-    });
+    })
 };
 
 </script>
@@ -31,7 +33,7 @@ async function sectionClick(e) {
   </div>
   <ul>
     <li><a href="/signup" on:click|preventDefault={sectionClick}>Sign Up</a></li>
-    <li><a href="/login" on:click|preventDefault={sectionClick}>Login</a></li>
+    <li><a href="/sign_in" on:click|preventDefault={sectionClick}>Login</a></li>
     <li>Search</li>
   </ul>
 </nav>

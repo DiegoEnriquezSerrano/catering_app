@@ -22,5 +22,7 @@ Rails.application.routes.draw do
   root to: 'welcome#index'
 
   get 'signup', to: 'users#sign_up'
-  get 'signup/caterer', to: 'users#new_caterer'
+  get 'signup/caterer', to: 'users#sign_up_caterer'
+  get 'sign_in', to: 'users#login'
+  get 'home', to: 'welcome#index'
 end

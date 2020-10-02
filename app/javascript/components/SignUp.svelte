@@ -2,6 +2,7 @@
 
 import { onMount } from 'svelte';
 import { createEventDispatcher } from 'svelte';
+import { getLocation, processAjaxData, sectionClick } from '../scripts.js';
 
 export let params;
 
@@ -10,7 +11,6 @@ let lastName;
 let email;
 let password;
 let passwordConfirmation;
-let catererUser;
 let catererBusinessName;
 let catererBusinessAddress;
 let catererBusinessCity;
@@ -20,21 +20,17 @@ let url;
 let reqParams = {};
 let body = {};
 
-let catererSignup = false;
-
-$: params;
-
 let dispatch = createEventDispatcher();
 
 let register = (e) => {
-  let reqBody = {
+  body = {
     user: {
       first_name: firstName.value,
       last_name: lastName.value,
       email: email.value,
       password: password.value,
       password_confirmation: passwordConfirmation.value,
-      caterer_user: catererSignup,
+      caterer_user: params == "caterer" ? true : false,
       caterer_business_address: catererBusinessAddress ? catererBusinessAddress.value : null,
       caterer_business_city: catererBusinessCity ? catererBusinessCity.value : null,
       caterer_business_state: catererBusinessState ? catererBusinessState.value : null,
@@ -45,29 +41,45 @@ let register = (e) => {
   let url = "/signup";
   let reqParams = {
     method: 'POST',
-    body: JSON.stringify(reqBody),
+    body: JSON.stringify(body),
     headers: { "Content-Type": "application/json" }
   };
   fetch(url, reqParams)
-  .then(response => {return response.text()})
+  .then(response => {
+    if (response.status == 201) { return response.text() }
+    else return response;
+    })
   .then(data => {
-    let res = JSON.parse(data);
-    console.log(res);
+    if(data.ok == false) {
+      return;
+    } else {
+      let res = JSON.parse(data);
+      dispatch('authorized', data);
+    }
   })
 }
 
-let catererSignUpToggle = () => {
-  catererSignup == false ? catererSignup = true : catererSignup = false;
+$: params;
+
+let catererSignup = params == "caterer" || false;
+
+async function navigate(e) {
+  let result = await sectionClick(e);
+  dispatch('loadPage', result);
 }
+
+onMount(() => {
+})
+
 
 </script>
 
   
 <main>
   <form class="authentication-form">
-    {#if catererSignup == false}
+    {#if params != "caterer"}
       <p>
-        <a href="/signup/caterer" class="primary" on:click|preventDefault={catererSignUpToggle}>Click here to register as a Caterer</a>
+        <a href="/signup/caterer" class="primary" on:click|preventDefault={navigate}>Click here to register as a Caterer</a>
       </p>
     {/if}
     <div class="fields_pair">
@@ -94,7 +106,7 @@ let catererSignUpToggle = () => {
     </div>
     <input type="hidden" name="caterer_user" bind:value={catererSignup} />
 
-    {#if catererSignup == true}
+    {#if params == "caterer"}
       <div class="field">
         <label for="business_name">Business name</label>
         <input type="text" name="business_name" bind:this={catererBusinessName} required>

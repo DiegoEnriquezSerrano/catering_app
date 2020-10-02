@@ -1,5 +1,12 @@
 class UsersController < ApplicationController
+
   def sign_up
-    render json: { page: 'signup' }, status: :ok
   end
+
+  def sign_up_caterer
+  end
+
+  def login
+  end
+
 end

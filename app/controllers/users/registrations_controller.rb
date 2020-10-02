@@ -15,7 +15,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     if @user.save
       jwt = JWT.encode( { user_id: @user.id, exp: (Time.now + 2.weeks).to_i }, ENV['DEVISE_SECRET_KEY'], 'HS256' )
-      render json: { token: jwt, email: @user.email }, status: :created
+      render json: { token: jwt, email: @user.email, first_name: @user.first_name, caterer: @user.caterer_user }, status: :created
     else
       head(:unprocessable_entity)
     end
@@ -45,7 +45,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params

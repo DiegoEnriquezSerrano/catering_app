@@ -1,39 +1,26 @@
 <script>
 
-import { createEventDispatcher } from 'svelte'; 
+import { createEventDispatcher } from 'svelte';
 
-console.log(window.location);
+export let user;
 
 let dispatch = createEventDispatcher();
-
-async function sectionClick(e) {
-  await fetch(e.target.pathname, { method: 'GET', headers: { "Content-Type": "application/json" } })
-    .then(response => {
-      response = { status: response.status, response: response }
-      return response;
-    })
-    .then(async data => {
-      let res = await data.response.text();
-      let obj = JSON.parse(res);
-      if (obj.status === "ok") {
-        dispatch('loadPage', { page: obj.page, params: obj.params });
-      }
-    });
-};
 
 </script>
 
 <main>
-  <nav>
-    <div class="brand">
-      <a href="/home" on:click|preventDefault={sectionClick}>Feedr</a>
-    </div>
-    <ul>
-      <li><a href="/signup" on:click|preventDefault={sectionClick}>Sign Up</a></li>
-      <li><a href="/login" on:click|preventDefault={sectionClick}>Login</a></li>
-      <li>Search</li>
-    </ul>
-  </nav>
+
+{#if user !== null}
+  <h1>Welcome {user.first_name}!</h1>
+  {#if user.caterer == true}
+    <h2>You will soon be able to create your store</h2>
+    {:else}
+    <h2>You will soon be able to order</h2>
+  {/if}
+{:else}
+  <h1>Please log in to continue!</h1>
+{/if}
+
 </main>
 
 <style>
@@ -45,44 +32,22 @@ main {
   background-image: url('/images/HomePageSplash.jpg');
   background-position: top left;
   margin: 0;
-  display: block;
+  display: grid;
   background-size: cover;
   background-repeat: no-repeat;
   color: #fdfdfd;
   border-bottom-left-radius: 40%;
   border-bottom-right-radius: 40%;
-}
+  align-content: center;
+  justify-items: center;
+  }
 
-nav {
-  display: grid;
-  color: #ffffff;
-  grid-template-columns: 150px 1fr;
-  align-items: center;
-  justify-items: stretch;
-  text-shadow: 0 0 10px rgb(0,0,0);
-  font-size: 1.2rem;
-}
+  h1 {
+    color: #000000;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgba(235,235,235,0.7);
+    box-shadow: 0 0 1px -3px rgba(255,255,255,0.9)
+  }
 
-.brand {
-  padding: 15px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: right;
-}
-
-li {
-  display: inline-block;
-  padding: 15px;
-  margin: 0;
-}
-
-a {
-  text-transform: none;
-  text-decoration: none;
-  color: #ffffff
-}
 </style>
