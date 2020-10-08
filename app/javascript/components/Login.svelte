@@ -84,22 +84,6 @@ main {
   grid-gap: 5px;
 }
 
-.fields_pair {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  grid-gap: 10px;
-}
-
-.fields_trio {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: 1fr 1fr 1fr;
-  width: 100%;
-  grid-gap: 10px;
-}
-
 label {
   font-size: 1.0rem;
   font-weight: bold;

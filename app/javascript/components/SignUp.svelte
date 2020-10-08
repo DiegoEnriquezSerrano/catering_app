@@ -36,7 +36,7 @@ let register = (e) => {
       caterer_business_state: catererBusinessState ? catererBusinessState.value : null,
       zip_code: zipCode ? zipCode.value : null
     }
-  }
+  };
 
   let url = "/signup";
   let reqParams = {
@@ -55,9 +55,9 @@ let register = (e) => {
     } else {
       let res = JSON.parse(data);
       dispatch('authorized', data);
-    }
-  })
-}
+    };
+  });
+};
 
 $: params;
 
@@ -68,13 +68,8 @@ async function navigate(e) {
   dispatch('loadPage', result);
 }
 
-onMount(() => {
-})
-
-
 </script>
 
-  
 <main>
   <form class="authentication-form">
     {#if params != "caterer"}

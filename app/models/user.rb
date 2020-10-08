@@ -10,4 +10,11 @@ class User < ApplicationRecord
   validates :last_name, presence: true, length: { minimum: 2, maximum: 35 }
   validates :caterer_user, inclusion: { in: [ true, false] }
 
+  has_many :meals, dependent: :delete_all
+
+  validates :caterer_business_name, presence: true, if: -> (u) { u.caterer_user == true }
+  validates :caterer_business_address, presence: true, if: -> (u) { u.caterer_user == true }
+  validates :caterer_business_city, presence: true, if: -> (u) { u.caterer_user == true }
+  validates :caterer_business_state, presence: true, if: -> (u) { u.caterer_user == true }
+  validates :zip_code, presence: true, if: -> (u) { u.caterer_user == true }
 end
