@@ -12,6 +12,7 @@ Rails.application.routes.draw do
               }
   resources :posts
   resources :users, only: [:create]
+  resources :meals
 
   namespace :users do
     resources :sessions, only: [:create, :destroy]
@@ -25,4 +26,5 @@ Rails.application.routes.draw do
   get 'signup/caterer', to: 'users#sign_up_caterer'
   get 'sign_in', to: 'users#login'
   get 'home', to: 'welcome#index'
+  get 'caterers', to: 'users#caterers'
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_29_220159) do
+ActiveRecord::Schema.define(version: 2020_10_08_121542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,18 @@ ActiveRecord::Schema.define(version: 2020_09_29_220159) do
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
+  end
+
+  create_table "meals", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "ingredients"
+    t.integer "servings_minimum"
+    t.decimal "price_minimum"
+    t.string "cover_image"
+    t.index ["user_id"], name: "index_meals_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -50,4 +62,5 @@ ActiveRecord::Schema.define(version: 2020_09_29_220159) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "meals", "users"
 end

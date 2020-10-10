@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+jackfruit_carnitas:
+  name: 'Sunday Morning Jackfruit Carnitas'
+  ingredients: "Nothing quite like getting the whole family together on a sunny weekend morning and enjoying each other's company over a heaping 'help youserlf' platter of carnitas. Roasted jackfruit bulbs cooked slowly in vegetable fat, condensed milk, Mexican Coke, orange juice and peel, oregano, salt, and garlic. Pulled only after the outer jackfruit 'meat' has a nice crispy texture, to ensure that every bite has a combination of tender and crunchy carnitas. Served with corn tortillas, lime, and salsa verde (green tomatillo salsa)."
+  servings_minimum: 5,
+  price_minimum: 40.00,
+  cover_image: 'img1.jpg'
+  user_id: 1

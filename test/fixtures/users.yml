@@ -1,0 +1,12 @@
+
+diego:
+  first_name: 'Diego'
+  last_name: 'Enriquez-Serrano'
+  email: 'diegoenriquez91@gmail.com'
+  caterer_user: true
+  caterer_business_name: 'Carnitas Round the Corner'
+  caterer_business_address: '1622 N Central Park Ave'
+  caterer_business_city: 'Chicago'
+  caterer_business_state: 'IL'
+  zip_code: 60647
+  id: 1

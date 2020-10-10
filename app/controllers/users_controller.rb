@@ -9,4 +9,9 @@ class UsersController < ApplicationController
   def login
   end
 
+  def caterers
+    @users = User.where(caterer_user: true)
+    render json: @users.as_json(only: [:id, :caterer_business_name])
+  end
+
 end

@@ -1,6 +1,7 @@
 <script>
 
 import { createEventDispatcher } from 'svelte';
+import CatererUsers from './CatererUsers.svelte';
 
 export let user;
 
@@ -14,8 +15,9 @@ let dispatch = createEventDispatcher();
   <h1>Welcome {user.first_name}!</h1>
   {#if user.caterer == true}
     <h2>You will soon be able to create your store</h2>
-    {:else}
+  {:else}
     <h2>You will soon be able to order</h2>
+    <CatererUsers />
   {/if}
 {:else}
   <h1>Please log in to continue!</h1>

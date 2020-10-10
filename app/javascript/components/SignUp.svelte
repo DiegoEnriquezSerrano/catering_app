@@ -31,6 +31,7 @@ let register = (e) => {
       password: password.value,
       password_confirmation: passwordConfirmation.value,
       caterer_user: params == "caterer" ? true : false,
+      caterer_business_name: catererBusinessName ? catererBusinessName.value : null,
       caterer_business_address: catererBusinessAddress ? catererBusinessAddress.value : null,
       caterer_business_city: catererBusinessCity ? catererBusinessCity.value : null,
       caterer_business_state: catererBusinessState ? catererBusinessState.value : null,
